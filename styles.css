@@ -1,0 +1,654 @@
+:root {
+  color-scheme: dark;
+  --bg: #11100f;
+  --text: #f4efe6;
+  --muted: #b8ac9b;
+  --gold: #d9b45f;
+  --aqua: #50c7b0;
+  --rust: #b35c35;
+  --ink: #11100f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  overflow: hidden;
+  background: #080807;
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+.phone {
+  position: relative;
+  width: min(100vw, 520px);
+  height: 100svh;
+  min-height: 620px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--bg);
+  touch-action: none;
+  isolation: isolate;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  padding: 32px 22px 82px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+.scene.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scene-copy {
+  position: relative;
+  z-index: 5;
+  max-width: 330px;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.45);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-size: clamp(34px, 8vw, 52px);
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+p {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.gesture {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 20;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(244, 239, 230, 0.22);
+  border-radius: 8px;
+  background: rgba(14, 13, 12, 0.78);
+  color: #fff8ea;
+  font-size: 15px;
+  backdrop-filter: blur(8px);
+}
+
+.hud {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  left: 16px;
+  right: 16px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.progress {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(244, 239, 230, 0.28);
+}
+
+.dot.active {
+  background: var(--gold);
+}
+
+#restart {
+  pointer-events: auto;
+  border: 1px solid rgba(244, 239, 230, 0.24);
+  border-radius: 8px;
+  background: rgba(17, 16, 15, 0.64);
+  color: var(--text);
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+.chip-notice {
+  position: absolute;
+  top: 72px;
+  left: 50%;
+  z-index: 80;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f1d590;
+  color: #17110b;
+  font-weight: 700;
+}
+
+.water {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(172deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 40px),
+    radial-gradient(circle at 58% 28%, rgba(80, 199, 176, 0.32), transparent 34%),
+    linear-gradient(#102d33, #14130f 74%);
+  animation: waterMove 8s linear infinite;
+}
+
+.scan-ui {
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  width: min(72vw, 330px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(244, 239, 230, 0.22);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(80, 199, 176, 0.12), rgba(8, 18, 17, 0.2) 48%, rgba(8, 8, 7, 0.18) 49%);
+  overflow: hidden;
+}
+
+.scan-ui::before,
+.scan-ui::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border: 1px solid rgba(80, 199, 176, 0.28);
+  border-radius: 50%;
+}
+
+.scan-ui::after {
+  inset: 38%;
+}
+
+.scan-ring {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  border: 1px solid rgba(217, 180, 95, 0.42);
+  box-shadow: 0 0 32px rgba(80, 199, 176, 0.18);
+}
+
+.scan-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50%;
+  height: 2px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(80, 199, 176, 0.86), transparent);
+  animation: radarSweep 3s linear infinite;
+}
+
+.readout {
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  z-index: 3;
+  width: 74%;
+  margin: 0;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.readout div {
+  border: 1px solid rgba(244, 239, 230, 0.18);
+  border-radius: 8px;
+  padding: 8px 6px;
+  background: rgba(17, 16, 15, 0.56);
+  text-align: center;
+}
+
+.readout dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.readout dd {
+  margin: 4px 0 0;
+  color: var(--aqua);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.scan-button {
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  z-index: 8;
+  min-width: 124px;
+  min-height: 48px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(244, 239, 230, 0.22);
+  border-radius: 8px;
+  background: #d9b45f;
+  color: #15100a;
+  font-weight: 800;
+}
+
+.river-found .scan-ui {
+  box-shadow: 0 0 90px rgba(80, 199, 176, 0.34);
+}
+
+.river-found [data-meter="signal"] {
+  color: #f1d590;
+}
+
+.memory {
+  background:
+    radial-gradient(circle at 40% 34%, rgba(217, 180, 95, 0.24), transparent 22%),
+    radial-gradient(circle at 60% 54%, rgba(80, 199, 176, 0.22), transparent 26%),
+    linear-gradient(#16130f, #0f221f 62%, #12100e);
+  overflow: hidden;
+}
+
+.memory-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 12%;
+  height: 54%;
+  z-index: 5;
+}
+
+.memory-card {
+  position: absolute;
+  inset: 0 26px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 22px;
+  opacity: 0;
+  transform: translateX(36px) scale(0.96);
+  transition: opacity 360ms ease, transform 360ms ease;
+}
+
+.memory-card.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.memory-card p {
+  margin: 0;
+  color: #f4efe6;
+  font-size: clamp(28px, 7vw, 40px);
+  font-weight: 800;
+}
+
+.hologram {
+  width: min(58vw, 270px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(80, 199, 176, 0.44);
+  border-radius: 50%;
+  background:
+    linear-gradient(rgba(80, 199, 176, 0.16) 1px, transparent 1px),
+    radial-gradient(circle, rgba(80, 199, 176, 0.24), rgba(80, 199, 176, 0.04) 56%, transparent 57%);
+  background-size: 100% 12px, auto;
+  box-shadow: 0 0 58px rgba(80, 199, 176, 0.28);
+}
+
+.salt-icon {
+  clip-path: polygon(10% 72%, 88% 36%, 92% 48%, 16% 84%);
+}
+
+.train-icon {
+  border-radius: 16px;
+  clip-path: polygon(16% 34%, 84% 34%, 92% 56%, 82% 70%, 18% 70%, 8% 56%);
+}
+
+.city-icon {
+  clip-path: polygon(14% 72%, 14% 42%, 28% 42%, 28% 24%, 42% 24%, 42% 54%, 54% 54%, 54% 34%, 70% 34%, 70% 18%, 84% 18%, 84% 72%);
+}
+
+.fish-icon {
+  clip-path: polygon(12% 50%, 34% 30%, 72% 34%, 92% 18%, 82% 50%, 92% 82%, 72% 66%, 34% 70%);
+}
+
+.memory-steps {
+  position: absolute;
+  left: 50%;
+  top: 68%;
+  z-index: 8;
+  display: flex;
+  gap: 9px;
+  transform: translateX(-50%);
+}
+
+.memory-dot {
+  width: 28px;
+  height: 3px;
+  background: rgba(244, 239, 230, 0.24);
+}
+
+.memory-dot.active {
+  background: var(--gold);
+}
+
+.salt {
+  background:
+    linear-gradient(transparent 55%, rgba(255, 255, 255, 0.14) 55% 56%, transparent 56%),
+    repeating-linear-gradient(0deg, transparent 0 42px, rgba(244, 239, 230, 0.13) 42px 43px),
+    linear-gradient(#2b2019, #433522 50%, #17110e);
+}
+
+.salt-field {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: 15%;
+  height: 38%;
+  transform: perspective(420px) rotateX(62deg);
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0 2px, transparent 2px 46px);
+}
+
+.uncle {
+  position: absolute;
+  left: 16%;
+  bottom: 30%;
+  width: 86px;
+  height: 168px;
+  z-index: 4;
+}
+
+.uncle-face {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #c89467;
+}
+
+.uncle-body {
+  width: 86px;
+  height: 112px;
+  margin-top: 2px;
+  border-radius: 10px 10px 6px 6px;
+  background: #3a2b22;
+}
+
+.shell-lamp {
+  position: absolute;
+  right: 18%;
+  bottom: 35%;
+  width: 112px;
+  height: 76px;
+  border-radius: 50% 50% 10px 10px;
+  background: repeating-radial-gradient(ellipse at center, #e7d8b7 0 8px, #a4875b 8px 10px);
+  transition: box-shadow 800ms ease, filter 800ms ease;
+}
+
+.salt-lit .shell-lamp {
+  filter: brightness(1.35);
+  box-shadow: 0 0 70px rgba(241, 213, 144, 0.9);
+}
+
+.dialog {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 22%;
+  z-index: 8;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: rgba(17, 16, 15, 0.76);
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.salt-lit .dialog {
+  opacity: 1;
+}
+
+.pollution {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(217, 180, 95, 0.28), transparent 22%),
+    linear-gradient(#120f0e, #201915);
+}
+
+#fogCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.core {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 178px;
+  height: 178px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff4bd 0 18%, #d9b45f 19% 44%, rgba(80, 199, 176, 0.38) 45% 72%, transparent 73%);
+  box-shadow: 0 0 58px rgba(217, 180, 95, 0.46);
+}
+
+.finale {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(80, 199, 176, 0.3), transparent 28%),
+    linear-gradient(#071716, #15110d 76%);
+}
+
+.chip-target {
+  position: absolute;
+  left: 50%;
+  top: 43%;
+  width: 154px;
+  height: 154px;
+  transform: translate(-50%, -50%);
+  border: 2px dashed rgba(241, 213, 144, 0.64);
+  border-radius: 50%;
+  box-shadow: inset 0 0 32px rgba(217, 180, 95, 0.2);
+}
+
+.chip {
+  position: absolute;
+  z-index: 12;
+  width: 74px;
+  height: 74px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f1d590, #a76d36);
+  color: #1a1008;
+  font-weight: 800;
+  touch-action: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+.chip-one {
+  left: 12%;
+  top: 25%;
+}
+
+.chip-two {
+  right: 12%;
+  top: 27%;
+}
+
+.chip-three {
+  left: 42%;
+  top: 64%;
+}
+
+.chip.locked {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.whale {
+  position: absolute;
+  left: 50%;
+  top: 39%;
+  z-index: 4;
+  width: 280px;
+  height: 142px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  transition: opacity 900ms ease, transform 900ms ease;
+}
+
+.whale-body {
+  position: absolute;
+  left: 0;
+  top: 28px;
+  width: 224px;
+  height: 92px;
+  border-radius: 58% 46% 46% 58%;
+  background: radial-gradient(circle at 28% 30%, #fff8d7, #61d1bd 32%, #176b63 78%);
+  box-shadow: 0 0 80px rgba(80, 199, 176, 0.76);
+}
+
+.whale-tail {
+  position: absolute;
+  right: 0;
+  top: 26px;
+  width: 94px;
+  height: 94px;
+  background: #61d1bd;
+  clip-path: polygon(20% 50%, 100% 0, 76% 50%, 100% 100%);
+  filter: drop-shadow(0 0 26px rgba(80, 199, 176, 0.82));
+}
+
+.finale-complete .whale {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.release-button {
+  position: absolute;
+  left: 50%;
+  top: 59%;
+  z-index: 24;
+  min-width: 132px;
+  min-height: 48px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(244, 239, 230, 0.24);
+  border-radius: 8px;
+  background: #50c7b0;
+  color: #071716;
+  font-weight: 800;
+}
+
+.whale-released .whale {
+  opacity: 0;
+  transform: translate(86%, -78%) scale(0.82);
+  transition: opacity 1200ms ease 400ms, transform 1800ms ease;
+}
+
+.whale-released .chip-target,
+.whale-released .chip {
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.whale-released {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(244, 239, 230, 0.2), transparent 18%),
+    linear-gradient(#12332f, #0f2a28 46%, #15110d);
+}
+
+.ending-line {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 54%;
+  z-index: 20;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 900ms ease 600ms;
+}
+
+.ending-line strong,
+.ending-line span,
+.ending-line em {
+  display: block;
+}
+
+.ending-line strong {
+  font-size: clamp(30px, 8vw, 44px);
+  line-height: 1.05;
+}
+
+.ending-line span {
+  margin-top: 12px;
+  color: #f1d590;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.ending-line em {
+  margin: 28px auto 0;
+  max-width: 320px;
+  color: #f4efe6;
+  font-size: 20px;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.whale-released .ending-line {
+  opacity: 1;
+}
+
+@keyframes waterMove {
+  from {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  to {
+    background-position: 0 120px, 0 0, 0 0;
+  }
+}
+
+@keyframes radarSweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 700px) {
+  body {
+    display: grid;
+    place-items: center;
+    background: #191816;
+  }
+
+  .phone {
+    height: min(92svh, 900px);
+    min-height: 760px;
+    border: 1px solid rgba(244, 239, 230, 0.14);
+  }
+}

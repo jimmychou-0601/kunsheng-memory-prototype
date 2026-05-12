@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>昆生記憶：記憶碎片</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="phone" aria-live="polite">
+      <section class="scene active" data-scene="river">
+        <div class="water"></div>
+        <div class="scan-ui">
+          <div class="scan-ring"></div>
+          <div class="scan-line"></div>
+          <dl class="readout">
+            <div><dt>方位</dt><dd data-meter="bearing">--</dd></div>
+            <div><dt>距離</dt><dd data-meter="distance">--</dd></div>
+            <div><dt>記憶訊號</dt><dd data-meter="signal">搜尋</dd></div>
+          </dl>
+        </div>
+        <button id="scanButton" class="scan-button" type="button">掃描</button>
+        <div class="scene-copy">
+          <h1>昆生記憶：記憶碎片</h1>
+          <p>記憶訊號</p>
+        </div>
+        <div class="gesture">點擊掃描，尋找第一片晶片</div>
+      </section>
+
+      <section class="scene memory" data-scene="memory">
+        <div class="memory-stage" aria-label="記憶投影">
+          <article class="memory-card active" data-memory="0">
+            <div class="hologram salt-icon"></div>
+            <p>鹽田</p>
+          </article>
+          <article class="memory-card" data-memory="1">
+            <div class="hologram train-icon"></div>
+            <p>青瞑蛇</p>
+          </article>
+          <article class="memory-card" data-memory="2">
+            <div class="hologram city-icon"></div>
+            <p>海洋文明</p>
+          </article>
+          <article class="memory-card" data-memory="3">
+            <div class="hologram fish-icon"></div>
+            <p>海洋生物</p>
+          </article>
+        </div>
+        <div class="memory-steps">
+          <span class="memory-dot active"></span>
+          <span class="memory-dot"></span>
+          <span class="memory-dot"></span>
+          <span class="memory-dot"></span>
+        </div>
+        <div class="scene-copy">
+          <h2>記憶投影</h2>
+          <p>晶片正在回放失落片段</p>
+        </div>
+        <div class="gesture">左右滑動觀看記憶</div>
+      </section>
+
+      <section class="scene salt" data-scene="salt">
+        <div class="salt-field"></div>
+        <div class="uncle">
+          <div class="uncle-face"></div>
+          <div class="uncle-body"></div>
+        </div>
+        <div class="shell-lamp"></div>
+        <div class="dialog">土地的記憶，需要有人記得。</div>
+        <div class="scene-copy">
+          <h2>鹽田</h2>
+          <p>阿塗伯出現</p>
+        </div>
+        <div class="gesture">長按螢幕，點亮蚵殼燈</div>
+      </section>
+
+      <section class="scene pollution" data-scene="pollution">
+        <canvas id="fogCanvas" width="760" height="1240" aria-label="擦除黑霧"></canvas>
+        <div class="core"></div>
+        <div class="scene-copy">
+          <h2>污染核心</h2>
+          <p>擦除黑霧</p>
+        </div>
+        <div class="gesture">用手指滑過黑霧，讓核心發光</div>
+      </section>
+
+      <section class="scene finale" data-scene="finale">
+        <div class="whale" aria-hidden="true">
+          <div class="whale-body"></div>
+          <div class="whale-tail"></div>
+        </div>
+        <div class="chip-target" aria-label="晶片拼合區"></div>
+        <button class="chip chip-one" type="button" data-chip="1">一</button>
+        <button class="chip chip-two" type="button" data-chip="2">二</button>
+        <button class="chip chip-three" type="button" data-chip="3">三</button>
+        <div class="scene-copy">
+          <h2>最終幕</h2>
+          <p>拖曳三片晶片拼合</p>
+        </div>
+        <button id="releaseWhale" class="release-button" type="button" hidden>釋放鯨魚</button>
+        <div class="ending-line">
+          <strong>《昆生記憶》</strong>
+          <span>重拾記憶，守護土地</span>
+          <em>這片海，正在等待人們再次傾聽。</em>
+        </div>
+        <div class="gesture">把晶片拖進中央光環</div>
+      </section>
+
+      <div class="hud">
+        <div class="progress">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button id="restart" type="button">重玩</button>
+      </div>
+
+      <div id="chipNotice" class="chip-notice" hidden>取得晶片</div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
