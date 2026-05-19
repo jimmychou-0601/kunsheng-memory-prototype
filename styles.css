@@ -307,34 +307,31 @@ p {
   box-shadow: 0 2px 0 #5a2808, 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* 第一幕：冷色室內視角，透過艙窗望向鼠尾草綠外景 */
+/* 第一幕：船佗駕駛艙視角 */
 .water {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background:
-    /* 室外有機圓形植被 */
-    radial-gradient(circle at 22% 52%, rgba(72, 100, 84, 0.75) 0 32px, transparent 34px),
-    radial-gradient(circle at 48% 42%, rgba(60, 92, 74, 0.65) 0 44px, transparent 46px),
-    radial-gradient(circle at 70% 56%, rgba(68, 96, 80, 0.70) 0 28px, transparent 30px),
-    radial-gradient(circle at 85% 44%, rgba(56, 84, 68, 0.60) 0 20px, transparent 22px),
-    radial-gradient(circle at 10% 46%, rgba(64, 92, 76, 0.55) 0 18px, transparent 20px),
-    /* 室外天空漸層：消色鼠尾草綠 */
-    linear-gradient(
-      180deg,
-      #3a5048 0%,
-      #527060 14%,
-      #6a8878 28%,
-      #7a9e8c 40%,
-      #88a898 52%,
-      #6e8a7a 62%,
-      #4e6a5a 74%,
-      #384e44 88%,
-      #243830 100%
-    );
+  background: url('./Pic/Gemini_Generated_Image_viiqvaviiqvaviiq.png') center / cover no-repeat;
 }
 
-/* 室外地面：幾何磁磚格紋，藍灰＋米色交錯 */
+/* 室外地面：圖片模式下隱藏磁磚地板 */
+[data-scene="river"] .water::before {
+  display: none;
+}
+
+/* 圖片模式下隱藏舊 CSS 繪製的橋、岸線、消波塊 */
+[data-scene="river"] .bridge,
+[data-scene="river"] .shoreline,
+[data-scene="river"] .tetrapods {
+  display: none;
+}
+
+/* 圖片已內含艙框，隱藏 CSS 版艙框覆蓋層 */
+[data-scene="river"] .cabin-frame {
+  display: none;
+}
+
 .water::before {
   content: "";
   position: absolute;
@@ -625,12 +622,13 @@ p {
 
 .scan-ui {
   position: absolute;
-  top: 53%;
-  left: 50%;
+  top: 44%;
+  left: auto;
+  right: 4%;
   z-index: 8;
   width: 138px;
   height: 232px;
-  transform: translate(-50%, -50%) rotate(1deg);
+  transform: translateY(-50%) rotate(-2deg);
   border: 5px solid #1a0c06;
   border-radius: 14px;
   background:
@@ -753,12 +751,13 @@ p {
 
 .scan-button {
   position: absolute;
-  left: 50%;
-  top: 58.5%;
+  left: auto;
+  right: 5%;
+  top: 68%;
   z-index: 12;
   min-width: 88px;
   min-height: 48px;
-  transform: translateX(-50%) rotate(1deg);
+  transform: rotate(-2deg);
   border: 2px solid #8b4c10;
   border-radius: 8px;
   background: linear-gradient(180deg, #c87828 0%, #7a4018 100%);
@@ -775,7 +774,7 @@ p {
 }
 
 .scan-button:active:not(:disabled) {
-  transform: translateX(-50%) rotate(1deg) scale(0.95);
+  transform: rotate(-2deg) scale(0.95);
   box-shadow: 0 2px 0 #4a2008, 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
