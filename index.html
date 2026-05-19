@@ -4,27 +4,56 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>鯤鯓記憶</title>
+    <meta name="description" content="鯤鯓記憶 — 互動式水域記憶探索體驗" />
+    <meta name="theme-color" content="#11100f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="phone" aria-live="polite">
       <section class="scene active" data-scene="river">
-        <div class="water"></div>
+        <div class="water">
+          <div class="bridge"></div>
+          <div class="shoreline"></div>
+          <div class="tetrapods"></div>
+          <div class="anomaly-ripples" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div class="cabin-frame" aria-hidden="true">
+          <div class="window window-left"></div>
+          <div class="window window-center"></div>
+          <div class="window window-right"></div>
+        </div>
+        <div class="sample-rack" aria-hidden="true">
+          <span data-label="WO-A"></span>
+          <span data-label="WO-A+"></span>
+          <span data-label="BLANK"></span>
+        </div>
+        <div class="console-map" aria-hidden="true">
+          <div class="map-shape"></div>
+          <i></i><i></i><i></i>
+        </div>
         <div class="scan-ui">
-          <div class="scan-ring"></div>
-          <div class="scan-line"></div>
+          <div class="scan-alert">正常</div>
+          <div class="scan-wave"></div>
           <dl class="readout">
-            <div><dt>方位</dt><dd data-meter="bearing">--</dd></div>
-            <div><dt>距離</dt><dd data-meter="distance">--</dd></div>
-            <div><dt>記憶訊號</dt><dd data-meter="signal">搜尋</dd></div>
+            <div><dt>採樣點</dt><dd data-meter="bearing">--</dd></div>
+            <div><dt>導電度</dt><dd data-meter="distance">--</dd></div>
+            <div><dt>水質</dt><dd data-meter="signal">正常</dd></div>
           </dl>
         </div>
-        <button id="scanButton" class="scan-button" type="button">掃描</button>
+        <button id="scanButton" class="scan-button" type="button" disabled>待機</button>
         <div class="scene-copy">
           <h1>鯤鯓記憶</h1>
-          <p>水質探測中</p>
+          <p>探測器監控水質訊號</p>
         </div>
-        <div class="gesture">點擊掃描，尋找第一片晶片</div>
+        <div class="gesture">點擊探測器，檢查水質異常</div>
       </section>
 
       <section class="scene memory" data-scene="memory">
@@ -60,7 +89,19 @@
       </section>
 
       <section class="scene salt" data-scene="salt">
+        <div class="salt-sky" aria-hidden="true"></div>
+        <div class="salt-sun" aria-hidden="true"></div>
+        <div class="salt-clouds" aria-hidden="true"></div>
+        <div class="salt-house" aria-hidden="true">
+          <div class="salt-house-roof"></div>
+        </div>
+        <div class="salt-tree" aria-hidden="true"></div>
+        <div class="salt-pole" aria-hidden="true"></div>
         <div class="salt-field"></div>
+        <div class="salt-dock" aria-hidden="true"></div>
+        <div class="salt-pile salt-pile-1" aria-hidden="true"></div>
+        <div class="salt-pile salt-pile-2" aria-hidden="true"></div>
+        <div class="salt-pile salt-pile-3" aria-hidden="true"></div>
         <div class="uncle">
           <div class="uncle-face"></div>
           <div class="uncle-body"></div>
@@ -86,24 +127,25 @@
 
       <section class="scene finale" data-scene="finale">
         <div class="whale" aria-hidden="true">
-          <div class="whale-body"></div>
-          <div class="whale-tail"></div>
+          <img class="piece-head" src="./Pic/碎片一.png" alt="">
+          <img class="piece-body" src="./Pic/碎片二.png" alt="">
+          <img class="piece-tail" src="./Pic/碎片三.png" alt="">
         </div>
         <div class="chip-target" aria-label="晶片拼合區"></div>
-        <button class="chip chip-one" type="button" data-chip="1">一</button>
-        <button class="chip chip-two" type="button" data-chip="2">二</button>
-        <button class="chip chip-three" type="button" data-chip="3">三</button>
+        <button class="chip chip-one" type="button" data-chip="1"><img src="./Pic/碎片一.png" alt="碎片一"></button>
+        <button class="chip chip-two" type="button" data-chip="2"><img src="./Pic/碎片二.png" alt="碎片二"></button>
+        <button class="chip chip-three" type="button" data-chip="3"><img src="./Pic/碎片三.png" alt="碎片三"></button>
         <div class="scene-copy">
           <h2>最終幕</h2>
           <p>拖曳三片晶片拼合</p>
         </div>
         <button id="releaseWhale" class="release-button" type="button" hidden>釋放鯨魚</button>
         <div class="ending-line">
-          <strong>《昆生記憶》</strong>
+          <strong>《鯤鯓記憶》</strong>
           <span>重拾記憶，守護土地</span>
           <em>這片海，正在等待人們再次傾聽。</em>
         </div>
-        <div class="gesture">把晶片拖進中央光環</div>
+        <div class="gesture">把晶片拖到對應拼圖位置</div>
       </section>
 
       <div class="hud">
@@ -118,6 +160,16 @@
       </div>
 
       <div id="chipNotice" class="chip-notice" hidden>取得晶片</div>
+      <div id="chipFeedback" class="chip-feedback" hidden role="dialog" aria-modal="true" aria-labelledby="chipFeedbackTitle">
+        <div class="chip-feedback__panel">
+          <div class="chip-feedback__halo" aria-hidden="true"></div>
+          <img id="chipFeedbackImage" class="chip-feedback__image" src="./Pic/碎片一.png" alt="取得的晶片碎片">
+          <p class="chip-feedback__eyebrow">記憶晶片</p>
+          <h2 id="chipFeedbackTitle">取得晶片</h2>
+          <p id="chipFeedbackBody">新的片段已被記錄。</p>
+          <button id="chipFeedbackConfirm" class="chip-feedback__confirm" type="button">確定</button>
+        </div>
+      </div>
     </main>
 
     <script src="./script.js"></script>
