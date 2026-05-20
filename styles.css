@@ -307,136 +307,12 @@ p {
   box-shadow: 0 2px 0 #5a2808, 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* 第一幕：船佗駕駛艙視角 */
+/* 第一幕：背景圖 */
 .water {
   position: absolute;
   inset: 0;
   overflow: hidden;
   background: url('./Pic/Gemini_Generated_Image_viiqvaviiqvaviiq.png') center / cover no-repeat;
-}
-
-/* 室外地面：圖片模式下隱藏磁磚地板 */
-[data-scene="river"] .water::before {
-  display: none;
-}
-
-/* 圖片模式下隱藏舊 CSS 繪製的橋、岸線、消波塊 */
-[data-scene="river"] .bridge,
-[data-scene="river"] .shoreline,
-[data-scene="river"] .tetrapods {
-  display: none;
-}
-
-/* 圖片已內含艙框，隱藏 CSS 版艙框覆蓋層 */
-[data-scene="river"] .cabin-frame {
-  display: none;
-}
-
-.water::before {
-  content: "";
-  position: absolute;
-  left: -10%;
-  right: -10%;
-  top: 52%;
-  height: 50%;
-  background:
-    /* 縱向磁磚分隔 */
-    repeating-linear-gradient(90deg,
-      rgba(28, 40, 40, 0.9) 0 3px,
-      transparent 3px 64px
-    ),
-    /* 橫向磁磚分隔 */
-    repeating-linear-gradient(0deg,
-      rgba(28, 40, 40, 0.9) 0 3px,
-      transparent 3px 48px
-    ),
-    /* 磁磚底色：藍灰與米色交錯 */
-    repeating-linear-gradient(90deg,
-      #7a9aaa 0 64px,
-      #b8aa88 64px 128px,
-      #8aaa98 128px 192px,
-      #a89878 192px 256px
-    );
-  border-top: 3px solid rgba(28, 40, 40, 0.8);
-}
-
-/* 整體暗角收邊 */
-.water::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 50% 55%, transparent 0 32%, rgba(15, 22, 20, 0.25) 62%, rgba(15, 22, 20, 0.6) 100%);
-  mix-blend-mode: multiply;
-  opacity: 0.85;
-}
-
-/* 橋樑 → 改為冷灰色水泥結構 */
-.bridge {
-  position: absolute;
-  left: 10%;
-  right: -12%;
-  top: 17%;
-  height: 52px;
-  transform: skewY(-4deg);
-  background:
-    repeating-linear-gradient(90deg, transparent 0 38px, rgba(20, 28, 28, 0.45) 38px 40px),
-    linear-gradient(180deg, #6a7a78 0%, #4a5858 60%, #323e3c 100%);
-  border: 3px solid #1e2828;
-  border-left: 0;
-  box-shadow: 0 8px 0 rgba(12, 18, 18, 0.5), 0 12px 24px rgba(0, 0, 0, 0.35);
-}
-
-.bridge::before,
-.bridge::after {
-  content: "";
-  position: absolute;
-  top: 44px;
-  width: 24px;
-  height: 160px;
-  background: linear-gradient(90deg, #242e2e, #5a6868 20% 75%, #242e2e);
-  border: 3px solid #1a2222;
-  border-top: 0;
-}
-
-.bridge::before {
-  left: 22%;
-}
-
-.bridge::after {
-  right: 20%;
-}
-
-/* 岸線 → 改為冷色植被輪廓 */
-.shoreline {
-  position: absolute;
-  left: -8%;
-  right: 10%;
-  top: 50%;
-  height: 10%;
-  background:
-    radial-gradient(ellipse at 10% 65%, #2e4438 0 18px, transparent 20px),
-    radial-gradient(ellipse at 28% 45%, #384e44 0 26px, transparent 28px),
-    radial-gradient(ellipse at 52% 60%, #324840 0 20px, transparent 22px),
-    radial-gradient(ellipse at 74% 48%, #3a5048 0 22px, transparent 24px),
-    radial-gradient(ellipse at 90% 60%, #2e4438 0 14px, transparent 16px),
-    linear-gradient(180deg, #3a5048 0%, #243830 100%);
-  opacity: 0.95;
-}
-
-/* 消波塊 → 細電線桿（冷灰色） */
-.tetrapods {
-  position: absolute;
-  right: 22%;
-  top: 18%;
-  left: auto;
-  width: 5px;
-  height: 38%;
-  background: linear-gradient(90deg, #1e2828, #4a5858 30% 70%, #1e2828);
-  border-radius: 2px;
-  clip-path: none;
 }
 
 .anomaly-ripples {
@@ -474,161 +350,15 @@ p {
   animation-delay: 360ms;
 }
 
-/* 艙框 — 深木炭灰，不含暖棕色 */
-.cabin-frame {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    linear-gradient(86deg,
-      transparent 0 6%,
-      #181e1e 6% 8%, #303c3c 8% 9%, transparent 9% 40%,
-      #181e1e 40% 43%, #303c3c 43% 44%, transparent 44% 74%,
-      #181e1e 74% 77%, #303c3c 77% 78%, transparent 78% 100%
-    ),
-    linear-gradient(180deg,
-      #181e1e 0 2%, #303c3c 2% 5%, transparent 5% 58%,
-      #181e1e 58% 60%, #303c3c 60% 100%
-    );
-}
-
-.cabin-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 55%, transparent 0 30%, rgba(10, 16, 16, 0.22) 58%, rgba(10, 16, 16, 0.6) 100%),
-    repeating-linear-gradient(104deg, transparent 0 36px, rgba(10, 15, 15, 0.12) 36px 38px, transparent 38px 80px);
-  mix-blend-mode: multiply;
-}
-
-/* 窗戶 — 冷薄荷/鼠尾草透光 */
-.window {
-  position: absolute;
-  top: 7%;
-  height: 43%;
-  border: 5px solid #181e1e;
-  border-radius: 20px;
-  background: rgba(100, 160, 140, 0.08);
-  box-shadow:
-    inset 0 0 0 2px rgba(140, 200, 180, 0.22),
-    inset 14px 0 28px rgba(100, 160, 140, 0.12),
-    0 0 0 7px rgba(24, 34, 34, 0.96),
-    0 3px 0 #0e1414;
-}
-
-.window-left {
-  left: 4%;
-  width: 33%;
-  transform: skewX(-8deg);
-}
-
-.window-center {
-  left: 42%;
-  width: 31%;
-  transform: skewX(-3deg);
-}
-
-.window-right {
-  right: 4%;
-  width: 20%;
-  transform: skewX(7deg);
-}
-
-.sample-rack {
-  position: absolute;
-  left: 4%;
-  bottom: 25%;
-  z-index: 4;
-  display: flex;
-  gap: 8px;
-  padding: 8px 10px 12px;
-  border: 3px solid #1c1f20;
-  border-radius: 6px;
-  background: linear-gradient(#d6bd89, #866b4f);
-  transform: rotate(-5deg);
-  box-shadow: 0 10px 0 rgba(28, 27, 25, 0.28);
-}
-
-.sample-rack span {
-  position: relative;
-  width: 34px;
-  height: 72px;
-  border: 3px solid #1d252b;
-  border-radius: 8px 8px 12px 12px;
-  background:
-    linear-gradient(#304b7d 0 9px, #17222f 9px 11px, transparent 11px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0 22%, transparent 23%),
-    linear-gradient(180deg, #fff6dc, rgba(212, 230, 226, 0.54) 58%, rgba(98, 142, 145, 0.34));
-}
-
-.sample-rack span::after {
-  content: attr(data-label);
-  position: absolute;
-  left: 50%;
-  top: 36px;
-  transform: translateX(-50%) rotate(-7deg);
-  color: #151515;
-  font-size: 8px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.console-map {
-  position: absolute;
-  left: 34%;
-  bottom: 27%;
-  z-index: 4;
-  width: 150px;
-  height: 94px;
-  border: 5px solid #171b1f;
-  border-radius: 8px;
-  background: linear-gradient(145deg, #394047, #222a30);
-  box-shadow: 0 10px 0 rgba(12, 13, 12, 0.36), inset 0 0 0 2px rgba(233, 220, 186, 0.08);
-}
-
-.map-shape {
-  position: absolute;
-  inset: 12px 38px 12px 14px;
-  background:
-    linear-gradient(130deg, transparent 0 38%, rgba(31, 42, 48, 0.8) 38% 40%, transparent 40%),
-    radial-gradient(circle at 62% 22%, #cf3d35 0 3px, transparent 4px),
-    radial-gradient(circle at 50% 58%, #cf3d35 0 3px, transparent 4px),
-    radial-gradient(circle at 78% 72%, #cf3d35 0 3px, transparent 4px),
-    linear-gradient(135deg, #d8d68c 0 42%, #9ed4d8 43% 100%);
-}
-
-.console-map i {
-  position: absolute;
-  right: 10px;
-  width: 24px;
-  height: 8px;
-  border-radius: 8px;
-  background: #cfe0d0;
-}
-
-.console-map i:nth-of-type(1) {
-  top: 16px;
-}
-
-.console-map i:nth-of-type(2) {
-  top: 34px;
-}
-
-.console-map i:nth-of-type(3) {
-  top: 52px;
-}
 
 .scan-ui {
   position: absolute;
-  top: 44%;
-  left: auto;
-  right: 4%;
+  top: 53%;
+  left: 50%;
   z-index: 8;
   width: 138px;
   height: 232px;
-  transform: translateY(-50%) rotate(-2deg);
+  transform: translate(-50%, -50%) rotate(1deg);
   border: 5px solid #1a0c06;
   border-radius: 14px;
   background:
@@ -662,15 +392,7 @@ p {
 }
 
 .scan-ui::after {
-  bottom: 16px;
-  width: 78px;
-  height: 50px;
-  background:
-    radial-gradient(circle at 16px 14px, #d75e58 0 4px, transparent 5px),
-    radial-gradient(circle at 62px 14px, #d2d4d0 0 4px, transparent 5px),
-    radial-gradient(circle at 39px 36px, #d2d4d0 0 4px, transparent 5px),
-    linear-gradient(#33404b, #222b34);
-  border-radius: 8px;
+  display: none;
 }
 
 .scan-alert {
@@ -751,13 +473,12 @@ p {
 
 .scan-button {
   position: absolute;
-  left: auto;
-  right: 5%;
-  top: 68%;
+  left: 50%;
+  top: 58%;
   z-index: 12;
   min-width: 88px;
   min-height: 48px;
-  transform: rotate(-2deg);
+  transform: translateX(-50%) rotate(1deg);
   border: 2px solid #8b4c10;
   border-radius: 8px;
   background: linear-gradient(180deg, #c87828 0%, #7a4018 100%);
@@ -774,7 +495,7 @@ p {
 }
 
 .scan-button:active:not(:disabled) {
-  transform: rotate(-2deg) scale(0.95);
+  transform: translateX(-50%) rotate(1deg) scale(0.95);
   box-shadow: 0 2px 0 #4a2008, 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -973,19 +694,19 @@ p {
 }
 
 /* 水下全息光圈 — 對照 S4-3 水中光線感 */
+.hologram img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 .hologram {
-  width: min(58vw, 270px);
+  width: min(58vw, 260px);
   aspect-ratio: 1;
-  border: 2px solid rgba(78, 201, 192, 0.55);
-  border-radius: 50%;
-  background:
-    linear-gradient(rgba(78, 201, 192, 0.12) 1px, transparent 1px),
-    radial-gradient(circle at 50% 40%, rgba(125, 232, 224, 0.32), rgba(30, 120, 150, 0.12) 55%, transparent 60%);
-  background-size: 100% 10px, auto;
-  box-shadow:
-    0 0 60px rgba(78, 201, 192, 0.35),
-    0 0 120px rgba(30, 100, 140, 0.2),
-    inset 0 0 40px rgba(78, 201, 192, 0.1);
+  background: none;
+  border: 0;
+  box-shadow: none;
 }
 
 /* 記憶全息：鹽罐輪廓 */
@@ -1077,8 +798,84 @@ p {
 
 /* 鹽田場景 — 純深色底，天空由子元素繪製 */
 .salt {
-  background: #0d0905;
+  background: url('./Pic/2.jpg') left center / cover no-repeat;
   overflow: hidden;
+}
+
+.salt-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12;
+  overflow: hidden;
+}
+
+.salt-grain {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #f0e8d0 70%, #c8b894);
+  box-shadow: 0 0 6px rgba(255, 245, 220, 0.85);
+  pointer-events: none;
+  animation: saltFall 1100ms ease-in forwards;
+}
+
+@keyframes saltFall {
+  0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translate(var(--dx, 0), var(--dy, 180px)) scale(1); opacity: 0; }
+}
+
+.salt-reveal {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  z-index: 14;
+  transform: translate(-50%, -50%);
+  font-size: clamp(80px, 22vw, 160px);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+  /* 鹽粒紋理：多層細密圓點疊上去當「鹽顆粒」 */
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.95) 0 1.2px, transparent 1.6px),
+    radial-gradient(circle at 70% 60%, rgba(255, 250, 230, 0.9) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 45% 80%, rgba(245, 235, 210, 0.85) 0 1.4px, transparent 1.8px),
+    radial-gradient(circle at 85% 20%, rgba(255, 255, 245, 0.9) 0 0.9px, transparent 1.3px),
+    radial-gradient(circle at 10% 70%, rgba(240, 230, 200, 0.85) 0 1.1px, transparent 1.5px),
+    linear-gradient(180deg, #fff8e0 0%, #f5e6c0 60%, #e0c896 100%);
+  background-size: 8px 8px, 6px 6px, 10px 10px, 5px 5px, 7px 7px, 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(120, 80, 30, 0.35);
+  filter: drop-shadow(2px 3px 0 rgba(80, 40, 10, 0.45)) drop-shadow(0 0 10px rgba(255, 220, 140, 0.45));
+  /* 由下往上「堆」出來 */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1800ms cubic-bezier(0.22, 0.8, 0.34, 1);
+}
+
+.salt-reveal.show {
+  clip-path: inset(0 0 0 0);
+  animation: saltGlow 2.4s ease-in-out infinite 1.8s;
+}
+
+@keyframes saltGlow {
+  0%, 100% { filter: drop-shadow(2px 3px 0 rgba(80, 40, 10, 0.45)) drop-shadow(0 0 8px rgba(255, 220, 140, 0.55)); }
+  50%      { filter: drop-shadow(2px 3px 0 rgba(80, 40, 10, 0.45)) drop-shadow(0 0 22px rgba(255, 230, 160, 0.9)); }
+}
+
+.salt .salt-sky,
+.salt .salt-sun,
+.salt .salt-clouds,
+.salt .salt-house,
+.salt .salt-tree,
+.salt .salt-pole,
+.salt .salt-field,
+.salt .salt-dock,
+.salt .salt-pile {
+  display: none;
 }
 
 /* ── 天空層 ── */
@@ -1386,12 +1183,26 @@ p {
 /* 阿土伯 — 扁帽、白鬍、米白外套（放大版） */
 .uncle {
   position: absolute;
-  left: 10%;
-  bottom: 24%;
-  width: 96px;
-  height: 210px;
+  right: -6%;
+  left: auto;
+  bottom: 14%;
+  width: 420px;
+  height: auto;
   z-index: 9;
-  filter: drop-shadow(3px 4px 0 #0d0703) drop-shadow(-1px -1px 0 #0d0703);
+  filter: drop-shadow(3px 4px 0 rgba(13, 7, 3, 0.5));
+}
+
+.uncle img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.uncle::before,
+.uncle::after,
+.uncle .uncle-face,
+.uncle .uncle-body {
+  display: none;
 }
 
 /* 鴨舌扁帽 — 帽頂 */
@@ -1499,26 +1310,6 @@ p {
   height: 14px;
   border: 1.5px solid rgba(26, 12, 6, 0.35);
   border-radius: 2px;
-}
-
-/* 蚵殼燈 */
-.shell-lamp {
-  position: absolute;
-  right: 18%;
-  bottom: 35%;
-  width: 112px;
-  height: 76px;
-  z-index: 9;
-  border-radius: 50% 50% 10px 10px;
-  background: repeating-radial-gradient(ellipse at center, #f0e0c0 0 7px, #c0956a 7px 10px, #8a6040 10px 12px);
-  border: 2px solid #1a0c06;
-  filter: drop-shadow(2px 2px 0 #0d0703);
-  transition: box-shadow 800ms ease, filter 800ms ease;
-}
-
-.salt-lit .shell-lamp {
-  filter: brightness(1.4) drop-shadow(2px 2px 0 #0d0703);
-  box-shadow: 0 0 40px rgba(255, 200, 80, 0.8), 0 0 80px rgba(255, 160, 40, 0.5);
 }
 
 /* ── 鹽罐道具（鹽田場景） ── */

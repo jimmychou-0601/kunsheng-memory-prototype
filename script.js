@@ -18,6 +18,7 @@ const ctx = fogCanvas.getContext("2d");
 let sceneIndex = 0;
 let memoryIndex = 0;
 let memoryComplete = false;
+const memoryViewed = new Set([0]);
 let swipeStartX = 0;
 let saltTimer = null;
 let erasedPixels = 0;
@@ -273,21 +274,30 @@ scanButton.addEventListener("click", () => {
   nextScene(900);
 });
 
-function showMemory(index) {
+function showMemory(index, options = {}) {
   memoryIndex = Math.max(0, Math.min(index, memoryCards.length - 1));
   memoryCards.forEach((card, current) => card.classList.toggle("active", current === memoryIndex));
-  memoryDots.forEach((dot, current) => dot.classList.toggle("active", current === memoryIndex));
+  memoryViewed.add(memoryIndex);
+  memoryDots.forEach((dot, current) => dot.classList.toggle("active", memoryViewed.has(current)));
 
-  if (memoryIndex === memoryCards.length - 1 && !memoryComplete) {
-    memoryComplete = true;
-    playSound("chip");
-    showChipFeedback(
-      "取得第一片晶片",
-      "記憶投影完成，第一段鯤鯓片段已被保存。",
-      "./Pic/碎片一.png",
-      () => nextScene(250)
-    );
+  const memoryGesture = document.querySelector("[data-scene='memory'] .gesture");
+  if (memoryViewed.size === memoryCards.length && !memoryComplete) {
+    if (memoryGesture) memoryGesture.textContent = "再向左滑動收集晶片";
+  } else if (memoryGesture) {
+    memoryGesture.textContent = "左右滑動觀看記憶";
   }
+}
+
+function collectMemoryChip() {
+  if (memoryComplete) return;
+  memoryComplete = true;
+  playSound("chip");
+  showChipFeedback(
+    "取得第一片晶片",
+    "記憶投影完成，第一段鯤鯓片段已被保存。",
+    "./Pic/碎片一.png",
+    () => nextScene(250)
+  );
 }
 
 const memoryScene = document.querySelector("[data-scene='memory']");
@@ -301,42 +311,86 @@ memoryScene.addEventListener("pointerup", (event) => {
 
   const distance = event.clientX - swipeStartX;
   if (distance < -44) {
+    if (memoryIndex === memoryCards.length - 1 && memoryViewed.size === memoryCards.length) {
+      collectMemoryChip();
+      return;
+    }
+
     showMemory(memoryIndex + 1);
     vibrate(18);
     playSound("swipe");
+    return;
   }
 
   if (distance > 44) {
     showMemory(memoryIndex - 1);
     vibrate(18);
     playSound("swipe");
+    return;
   }
 });
 
 const saltScene = document.querySelector("[data-scene='salt']");
-saltScene.addEventListener("pointerdown", () => {
-  if (!saltScene.classList.contains("active")) return;
+const saltParticles = saltScene.querySelector(".salt-particles");
+const saltGesture = saltScene.querySelector(".gesture");
+let saltDragging = false;
+let saltSprinkled = 0;
+let saltComplete = false;
+const SALT_THRESHOLD = 60;
+let lastSaltSpawn = 0;
 
-  playTone(180, 0.08, { type: "sine", volume: 0.035 });
-  saltTimer = window.setTimeout(() => {
+function spawnSaltGrain(x, y) {
+  const grain = document.createElement("span");
+  grain.className = "salt-grain";
+  const rect = saltScene.getBoundingClientRect();
+  grain.style.left = `${x - rect.left}px`;
+  grain.style.top = `${y - rect.top}px`;
+  grain.style.setProperty("--dx", `${(Math.random() - 0.5) * 30}px`);
+  grain.style.setProperty("--dy", `${80 + Math.random() * 120}px`);
+  saltParticles.appendChild(grain);
+  window.setTimeout(() => grain.remove(), 1200);
+}
+
+function sprinkleSalt(x, y) {
+  const now = performance.now();
+  if (now - lastSaltSpawn < 24) return;
+  lastSaltSpawn = now;
+  for (let i = 0; i < 3; i += 1) {
+    spawnSaltGrain(x + (Math.random() - 0.5) * 24, y + (Math.random() - 0.5) * 10);
+  }
+  saltSprinkled += 1;
+  playSound("scratch");
+
+  if (!saltComplete && saltSprinkled >= SALT_THRESHOLD) {
+    saltComplete = true;
     saltScene.classList.add("salt-lit");
     vibrate([30, 40, 30]);
     playSound("lamp");
     showChipFeedback(
       "取得第二片晶片",
-      "蚵殼燈點亮後，鹽田的記憶被重新接回。",
+      "鹽田的記憶被重新接回。",
       "./Pic/碎片二.png",
       () => nextScene(250)
     );
-  }, 850);
+  } else if (!saltComplete && saltGesture) {
+    const pct = Math.min(100, Math.round((saltSprinkled / SALT_THRESHOLD) * 100));
+    saltGesture.textContent = `撒鹽 ${pct}%`;
+  }
+}
+
+saltScene.addEventListener("pointerdown", (event) => {
+  if (!saltScene.classList.contains("active")) return;
+  saltDragging = true;
+  sprinkleSalt(event.clientX, event.clientY);
 });
 
-saltScene.addEventListener("pointerup", () => {
-  window.clearTimeout(saltTimer);
+saltScene.addEventListener("pointermove", (event) => {
+  if (!saltDragging || !saltScene.classList.contains("active")) return;
+  sprinkleSalt(event.clientX, event.clientY);
 });
 
-saltScene.addEventListener("pointerleave", () => {
-  window.clearTimeout(saltTimer);
+["pointerup", "pointerleave", "pointercancel"].forEach((evt) => {
+  saltScene.addEventListener(evt, () => { saltDragging = false; });
 });
 
 function drawFog() {
@@ -516,6 +570,8 @@ restart.addEventListener("click", () => {
   playSound("reset");
   memoryIndex = 0;
   memoryComplete = false;
+  memoryViewed.clear();
+  memoryViewed.add(0);
   erasedPixels = 0;
   pollutionComplete = false;
   finaleCount = 0;
@@ -535,6 +591,12 @@ restart.addEventListener("click", () => {
 
   showMemory(0);
   saltScene.classList.remove("salt-lit");
+  saltDragging = false;
+  saltSprinkled = 0;
+  saltComplete = false;
+  lastSaltSpawn = 0;
+  saltParticles.replaceChildren();
+  if (saltGesture) saltGesture.textContent = "拖曳手指撒鹽，喚回鹽田記憶";
 
   const finaleScene = document.querySelector("[data-scene='finale']");
   finaleScene.classList.remove("finale-complete", "whale-released");
